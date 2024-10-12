@@ -220,7 +220,7 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 
 <!-- Firebase Initialization -->
-<script type="module">
+ <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
@@ -268,9 +268,7 @@
 
         // Word count functionality for project description
         $('#projectDescription').on('input', function () {
-            const wordCount = $(this).val().split(/\s+/).filter(function (word) {
-                return word.length > 0; // Filter out empty words
-            }).length;
+            const wordCount = $(this).val().split(/\s+/).filter(word => word.length > 0).length;
             $('#wordCount').text(wordCount);
         });
 
@@ -315,6 +313,9 @@
             projects.push(project);
             localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
 
+            // Debugging
+            console.log("Submitted project:", project); // Log the submitted project
+
             // Append the project to the project responses list
             appendProjectToList(project);
 
@@ -346,62 +347,9 @@
 
         // Load projects from Firestore
         loadProjectsFromFirestore();
-
-      // Function to load projects from Firestore with real-time updates
-function loadProjectsFromFirestore() {
-    const projectsRef = collection(db, "projects");
-
-    // Listen for real-time updates
-    onSnapshot(projectsRef, (querySnapshot) => {
-        $('#projectResponsesList').empty(); // Clear the list first
-        querySnapshot.forEach((doc) => {
-            const project = doc.data();
-            appendProjectToList({
-                title: project.title,
-                field: project.field,
-                description: project.description,
-                contact: project.contact
-            });
-        });
-    }, (error) => {
-        console.error("Error getting documents: ", error);
-    });
-}
-
-      // Handle project submission
-$('#projectForm').on('submit', function (event) {
-    event.preventDefault();
-    const projectTitle = $('#projectTitle').val();
-    const fieldOfInterest = $('#fieldOfInterest').val();
-    const projectDescription = $('#projectDescription').val();
-    const contactInfo = $('#contactInfo').val();
-
-    // Create project object
-    const project = {
-        title: projectTitle,
-        field: fieldOfInterest,
-        description: projectDescription,
-        contact: contactInfo
-    };
-
-    // Get existing projects from local storage
-    const projects = JSON.parse(localStorage.getItem('projects')) || [];
-    projects.push(project);
-    localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
-
-    // Debugging
-    console.log("Submitted project:", project); // Log the submitted project
-
-    // Append the project to the project responses list
-    appendProjectToList(project);
-
-    // Clear the project form
-    $('#projectForm')[0].reset();
-    closeModal('#projectModal'); // Close the project modal after submission
-});
-
     });
 </script>
+
 
 </body>
 </html>
