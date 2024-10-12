@@ -309,6 +309,27 @@
         $('#projectForm')[0].reset();
         closeModal('#projectModal'); // Close the project modal after submission
       });
+
+      // Function to load projects from Firestore with real-time updates
+function loadProjects() {
+    const projectsRef = collection(db, "projects");
+
+    // Listen for real-time updates
+    onSnapshot(projectsRef, (querySnapshot) => {
+        $('#projectResponsesList').empty(); // Clear the list first
+        querySnapshot.forEach((doc) => {
+            const project = doc.data();
+            appendProjectToList({
+                title: project.title,
+                field: project.field,
+                description: project.description,
+                contact: project.contact
+            });
+        });
+    }, (error) => {
+        console.error("Error getting documents: ", error);
+    });
+}
   
     });
   </script>
