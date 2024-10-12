@@ -345,6 +345,36 @@
                 console.error("Error adding document: ", error);
             }
         });
+// Handle project submission
+$('#projectForm').on('submit', async function (event) {
+    event.preventDefault();
+    const projectTitle = $('#projectTitle').val();
+    const fieldOfInterest = $('#fieldOfInterest').val();
+    const projectDescription = $('#projectDescription').val();
+    const contactInfo = $('#contactInfo').val();
+
+    // Create project object
+    const project = {
+        title: projectTitle,
+        field: fieldOfInterest,
+        description: projectDescription,
+        contact: contactInfo
+    };
+
+    // Save the project to Firestore with a unique ID
+    const uniqueId = Date.now(); // Using timestamp for a unique document ID
+    try {
+        await setDoc(doc(db, "projects", uniqueId.toString()), project);
+        console.log("Project submitted successfully!");
+
+        // Append the project to the project responses list
+        appendProjectToList(project);
+        // Clear the project form
+        $('#projectForm')[0].reset();
+        closeModal('#projectModal');
+    } catch (error) {
+        console.error("Error adding document: ", error);
+    }
 
         // Load projects from local storage on page load (optional)
         loadProjectsFromLocalStorage();
