@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Collab4Change</title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+  <!-- font awesome stylesheet -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa; /* Light background for better contrast */
+      color: #333; /* Dark text for readability */
+    }
+
+    .heading_container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .project_submission_section {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 20px; /* Space above section */
+    }
+
+    .modal-content {
+      padding: 20px;
+      border-radius: 8px;
+      border: none; /* Remove default border */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Soft shadow for modal */
+    }
+
+    .modal-header {
+      border-bottom: none;
+    }
+
+    .modal-footer {
+      border-top: none;
+    }
+
+    .response-box {
+      border: 1px solid #e1e1e1; /* Subtle border */
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9; /* Slightly darker background */
+      transition: transform 0.2s; /* Animation effect */
+    }
+
+    .response-box:hover {
+      transform: scale(1.02); /* Slight scaling on hover */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow on hover */
+    }
+
+    .btn-primary {
+      background-color: #ff3700;
+      border-color: #ff3700;
+      transition: background-color 0.3s; /* Smooth transition */
+    }
+
+    .btn-primary:hover {
+      background-color: #d30000; /* Darker shade on hover */
+      border-color: #d30000;
+    }
+
+    .footer_section {
+      background-color: #343a40;
+      color: #d2e9fa;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 20px; /* Space above footer */
+    }
+
+    /* Custom Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1000; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0); /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+      padding-top: 60px; /* Location of the box */
+    }
+
+    /* Modal Header */
+    .modal-header {
+      font-size: 1.5rem; /* Larger header */
+      color: #ff3700; /* Primary color for header */
+    }
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    <header class="header_section">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg custom_nav-container pt-3">
+          <a class="navbar-brand mr-5" href="index.html">
+            <span>
+              Collab4Change
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="issues.html">Submit</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  <!-- project submission section -->
+  <section class="project_submission_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>Submit Your <span style="color:#ff3700;">Idea</span>,<span style="color: #ff3700;">Project</span>,<span style="color: #ff3700;">Proposal</span></h2>
+          </div>
+      <p>Want to solve an issue, make a difference, or create change? Propose your ideas, or find existing initiatives to make an impact. The world needs you.</p>
+      <div class="text-center mb-3">
+        <button id="openProjectModal" class="btn btn-primary">Add a Project</button>
+      </div>
+
+      <div class="modal" id="projectModal">
+        <div class="modal-content">
+          <span class="close" id="closeProjectModal">&times;</span>
+          <h2>Add Your Project</h2>
+          <form id="projectForm">
+            <div class="form-group">
+              <label for="projectTitle">Project Title</label>
+              <input type="text" id="projectTitle" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="fieldOfInterest">Field of Interest</label>
+              <select id="fieldOfInterest" class="form-control" required>
+                <option value="Environment">Environment</option>
+                <option value="Education">Education</option>
+                <option value="Health">Health</option>
+                <option value="Technology">Technology</option>
+                <option value="Poverty">Poverty</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="projectDescription">Project Description</label>
+              <textarea id="projectDescription" class="form-control" rows="3" required></textarea>
+              <small>Word count: <span id="wordCount">0</span></small>
+            </div>
+            <div class="form-group">
+              <label for="contactInfo">Contact Information</label>
+              <input type="text" id="contactInfo" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Project</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="submitted_responses mt-3">
+        <h4>Projects</h4>
+        <div id="projectResponsesList"></div>
+      </div>
+    </div>
+  </section>
+  <!-- end project submission section -->
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+
+  <!-- Custom JavaScript -->
+  <!-- Custom JavaScript -->
+<script>
+    $(document).ready(function () {
+      // Function to handle the closing of modals
+      function closeModal(modalId) {
+        $(modalId).css('display', 'none');
+      }
+  
+      // Open the project modal
+      $('#openProjectModal').on('click', function () {
+        $('#projectModal').css('display', 'block');
+      });
+  
+      // Close the project modal
+      $('#closeProjectModal').on('click', function () {
+        closeModal('#projectModal');
+      });
+  
+      // Close the modal when clicking outside of it
+      $(window).on('click', function (event) {
+        if (event.target === document.getElementById('projectModal')) {
+          closeModal('#projectModal');
+        }
+      });
+  
+      // Word count functionality for project description
+      $('#projectDescription').on('input', function () {
+        const wordCount = $(this).val().split(/\s+/).filter(function (word) {
+          return word.length > 0; // Filter out empty words
+        }).length;
+        $('#wordCount').text(wordCount);
+      });
+  
+      // Function to append project to the list
+      function appendProjectToList(project) {
+        $('#projectResponsesList').append(`
+          <div class="response-box">
+            <strong>${project.title}</strong> (${project.field})<br>
+            <em>${project.description}</em><br>
+            <small>Contact: ${project.contact}</small>
+          </div>`);
+      }
+  
+      // Function to load projects from local storage
+      function loadProjects() {
+        const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        projects.forEach(appendProjectToList);
+      }
+  
+      // Load projects from local storage on page load
+      loadProjects();
+  
+      // Handle project submission
+      $('#projectForm').on('submit', function (event) {
+        event.preventDefault();
+        const projectTitle = $('#projectTitle').val();
+        const fieldOfInterest = $('#fieldOfInterest').val();
+        const projectDescription = $('#projectDescription').val();
+        const contactInfo = $('#contactInfo').val();
+  
+        // Create project object
+        const project = {
+          title: projectTitle,
+          field: fieldOfInterest,
+          description: projectDescription,
+          contact: contactInfo
+        };
+  
+        // Get existing projects from local storage
+        const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        projects.push(project);
+        localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
+  
+        // Append the project to the project responses list
+        appendProjectToList(project);
+  
+        // Clear the project form
+        $('#projectForm')[0].reset();
+        closeModal('#projectModal'); // Close the project modal after submission
+      });
+  
+    });
+  </script>
+  </body>
+  </html>
+  
