@@ -213,89 +213,99 @@
   <script type="text/javascript" src="js/bootstrap.js"></script>
 
   <!-- Custom JavaScript -->
-  <!-- Custom JavaScript -->
 <script>
-    $(document).ready(function () {
-      // Function to handle the closing of modals
-      function closeModal(modalId) {
-        $(modalId).css('display', 'none');
-      }
-  
-      // Open the project modal
-      $('#openProjectModal').on('click', function () {
-        $('#projectModal').css('display', 'block');
-      });
-  
-      // Close the project modal
-      $('#closeProjectModal').on('click', function () {
-        closeModal('#projectModal');
-      });
-  
-      // Close the modal when clicking outside of it
-      $(window).on('click', function (event) {
-        if (event.target === document.getElementById('projectModal')) {
-          closeModal('#projectModal');
-        }
-      });
-  
-      // Word count functionality for project description
-      $('#projectDescription').on('input', function () {
-        const wordCount = $(this).val().split(/\s+/).filter(function (word) {
-          return word.length > 0; // Filter out empty words
-        }).length;
-        $('#wordCount').text(wordCount);
-      });
-  
-      // Function to append project to the list
-      function appendProjectToList(project) {
-        $('#projectResponsesList').append(`
-          <div class="response-box">
-            <strong>${project.title}</strong> (${project.field})<br>
-            <em>${project.description}</em><br>
-            <small>Contact: ${project.contact}</small>
-          </div>`);
-      }
-  
-      // Function to load projects from local storage
-      function loadProjects() {
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.forEach(appendProjectToList);
-      }
-  
-      // Load projects from local storage on page load
-      loadProjects();
-  
-      // Handle project submission
-      $('#projectForm').on('submit', function (event) {
-        event.preventDefault();
-        const projectTitle = $('#projectTitle').val();
-        const fieldOfInterest = $('#fieldOfInterest').val();
-        const projectDescription = $('#projectDescription').val();
-        const contactInfo = $('#contactInfo').val();
-  
-        // Create project object
-        const project = {
-          title: projectTitle,
-          field: fieldOfInterest,
-          description: projectDescription,
-          contact: contactInfo
-        };
-  
-        // Get existing projects from local storage
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.push(project);
-        localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
-  
-        // Append the project to the project responses list
-        appendProjectToList(project);
-  
-        // Clear the project form
-        $('#projectForm')[0].reset();
-        closeModal('#projectModal'); // Close the project modal after submission
-      });
-  
-    });
-  </script>
+$(document).ready(function () {
+  // Load projects from local storage on page load
+  loadProjects();
+
+  // Handle project submission
+  $('#projectForm').on('submit', function (event) {
+    event.preventDefault();
+    
+    const projectTitle = $('#projectTitle').val().trim();
+    const fieldOfInterest = $('#fieldOfInterest').val();
+    const projectDescription = $('#projectDescription').val().trim();
+    const contactInfo = $('#contactInfo').val().trim();
+    
+    // Ensure no fields are empty
+    if (!projectTitle || !projectDescription || !contactInfo) {
+      alert('Please fill out all required fields!');
+      return;
+    }
+
+    // Create a project object
+    const project = {
+      title: projectTitle,
+      field: fieldOfInterest,
+      description: projectDescription,
+      contact: contactInfo
+    };
+
+    // Get existing projects from local storage or initialize empty array
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+    // Add the new project to the array
+    projects.push(project);
+
+    // Save the updated projects array to local storage
+    localStorage.setItem('projects', JSON.stringify(projects));
+
+    // Append the new project to the UI
+    appendProjectToList(project);
+
+    // Clear the form after submission
+    $('#projectForm')[0].reset();
+    closeModal('#projectModal'); // Close modal after submission
+  });
+
+  // Function to load projects from local storage
+  function loadProjects() {
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+    projects.forEach(appendProjectToList);
+  }
+
+  // Function to append project to the list
+  function appendProjectToList(project) {
+    $('#projectResponsesList').append(`
+      <div class="response-box">
+        <strong>${project.title}</strong> (${project.field})<br>
+        <em>${project.description}</em><br>
+        <small>Contact: ${project.contact}</small>
+      </div>
+    `);
+  }
+
+  // Function to close the modal
+  function closeModal(modalId) {
+    $(modalId).css('display', 'none');
+  }
+
+  // Open the project modal
+  $('#openProjectModal').on('click', function () {
+    $('#projectModal').css('display', 'block');
+  });
+
+  // Close the project modal
+  $('#closeProjectModal').on('click', function () {
+    closeModal('#projectModal');
+  });
+
+  // Close the modal when clicking outside of it
+  $(window).on('click', function (event) {
+    if (event.target === document.getElementById('projectModal')) {
+      closeModal('#projectModal');
+    }
+  });
+
+  // Word count functionality for project description
+  $('#projectDescription').on('input', function () {
+    const wordCount = $(this).val().split(/\s+/).filter(function (word) {
+      return word.length > 0; // Filter out empty words
+    }).length;
+    $('#wordCount').text(wordCount);
+  });
+});
+</script>
   </body>
   </html>
   
