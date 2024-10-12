@@ -207,16 +207,21 @@
       </div>
     </div>
   </section>
-  <!-- end project submission section -->
+
+
+
+
 
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.js"></script>
- 
-  <script type="module">
+<script type="text/javascript" src="js/bootstrap.js"></script>
+
+<script type="module">
+    // Import necessary Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-analytics.js";
 
+    // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyAzOGYWL2Z7FXT5QF9Tb-ve7qthR_sOHGM",
         authDomain: "collab4change.firebaseapp.com",
@@ -227,112 +232,119 @@
         measurementId: "G-3QSJW1MM1D"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const analytics = getAnalytics(app);
 
+    // jQuery Document Ready
     $(document).ready(function () {
-      // Function to handle the closing of modals
-      function closeModal(modalId) {
-        $(modalId).css('display', 'none');
-      }
-  
-      // Open the project modal
-      $('#openProjectModal').on('click', function () {
-        $('#projectModal').css('display', 'block');
-      });
-  
-      // Close the project modal
-      $('#closeProjectModal').on('click', function () {
-        closeModal('#projectModal');
-      });
-  
-      // Close the modal when clicking outside of it
-      $(window).on('click', function (event) {
-        if (event.target === document.getElementById('projectModal')) {
-          closeModal('#projectModal');
+        // Function to handle the closing of modals
+        function closeModal(modalId) {
+            $(modalId).css('display', 'none');
         }
-      });
-  
-      // Word count functionality for project description
-      $('#projectDescription').on('input', function () {
-        const wordCount = $(this).val().split(/\s+/).filter(function (word) {
-          return word.length > 0; // Filter out empty words
-        }).length;
-        $('#wordCount').text(wordCount);
-      });
-  
-      // Function to append project to the list
-      function appendProjectToList(project) {
-        $('#projectResponsesList').append(`
-          <div class="response-box">
-            <strong>${project.title}</strong> (${project.field})<br>
-            <em>${project.description}</em><br>
-            <small>Contact: ${project.contact}</small>
-          </div>`);
-      }
-  
-      // Function to load projects from local storage
-      function loadProjects() {
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.forEach(appendProjectToList);
-      }
-  
-      // Load projects from local storage on page load
-      loadProjects();
-  
-      // Handle project submission
-      $('#projectForm').on('submit', function (event) {
-        event.preventDefault();
-        const projectTitle = $('#projectTitle').val();
-        const fieldOfInterest = $('#fieldOfInterest').val();
-        const projectDescription = $('#projectDescription').val();
-        const contactInfo = $('#contactInfo').val();
-  
-        // Create project object
-        const project = {
-          title: projectTitle,
-          field: fieldOfInterest,
-          description: projectDescription,
-          contact: contactInfo
-        };
-  
-        // Get existing projects from local storage
-        const projects = JSON.parse(localStorage.getItem('projects')) || [];
-        projects.push(project);
-        localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
-  
-        // Append the project to the project responses list
-        appendProjectToList(project);
-  
-        // Clear the project form
-        $('#projectForm')[0].reset();
-        closeModal('#projectModal'); // Close the project modal after submission
-      });
 
-      // Function to load projects from Firestore with real-time updates
-function loadProjects() {
-    const projectsRef = collection(db, "projects");
-
-    // Listen for real-time updates
-    onSnapshot(projectsRef, (querySnapshot) => {
-        $('#projectResponsesList').empty(); // Clear the list first
-        querySnapshot.forEach((doc) => {
-            const project = doc.data();
-            appendProjectToList({
-                title: project.title,
-                field: project.field,
-                description: project.description,
-                contact: project.contact
-            });
+        // Open the project modal
+        $('#openProjectModal').on('click', function () {
+            $('#projectModal').css('display', 'block');
         });
-    }, (error) => {
-        console.error("Error getting documents: ", error);
+
+        // Close the project modal
+        $('#closeProjectModal').on('click', function () {
+            closeModal('#projectModal');
+        });
+
+        // Close the modal when clicking outside of it
+        $(window).on('click', function (event) {
+            if (event.target === document.getElementById('projectModal')) {
+                closeModal('#projectModal');
+            }
+        });
+
+        // Word count functionality for project description
+        $('#projectDescription').on('input', function () {
+            const wordCount = $(this).val().split(/\s+/).filter(function (word) {
+                return word.length > 0; // Filter out empty words
+            }).length;
+            $('#wordCount').text(wordCount);
+        });
+
+        // Function to append project to the list
+        function appendProjectToList(project) {
+            $('#projectResponsesList').append(`
+                <div class="response-box">
+                    <strong>${project.title}</strong> (${project.field})<br>
+                    <em>${project.description}</em><br>
+                    <small>Contact: ${project.contact}</small>
+                </div>
+            `);
+        }
+
+        // Load projects from local storage
+        function loadProjectsFromLocalStorage() {
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.forEach(appendProjectToList);
+        }
+
+        // Load projects from local storage on page load
+        loadProjectsFromLocalStorage();
+
+        // Handle project submission
+        $('#projectForm').on('submit', function (event) {
+            event.preventDefault();
+            const projectTitle = $('#projectTitle').val();
+            const fieldOfInterest = $('#fieldOfInterest').val();
+            const projectDescription = $('#projectDescription').val();
+            const contactInfo = $('#contactInfo').val();
+
+            // Create project object
+            const project = {
+                title: projectTitle,
+                field: fieldOfInterest,
+                description: projectDescription,
+                contact: contactInfo
+            };
+
+            // Get existing projects from local storage
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.push(project);
+            localStorage.setItem('projects', JSON.stringify(projects)); // Save updated projects to local storage
+
+            // Append the project to the project responses list
+            appendProjectToList(project);
+
+            // Clear the project form
+            $('#projectForm')[0].reset();
+            closeModal('#projectModal'); // Close the project modal after submission
+        });
+
+        // Function to load projects from Firestore with real-time updates
+        function loadProjectsFromFirestore() {
+            const projectsRef = collection(db, "projects");
+
+            // Listen for real-time updates
+            onSnapshot(projectsRef, (querySnapshot) => {
+                $('#projectResponsesList').empty(); // Clear the list first
+                querySnapshot.forEach((doc) => {
+                    const project = doc.data();
+                    appendProjectToList({
+                        title: project.title,
+                        field: project.field,
+                        description: project.description,
+                        contact: project.contact
+                    });
+                });
+            }, (error) => {
+                console.error("Error getting documents: ", error);
+            });
+        }
+
+        // Load projects from Firestore
+        loadProjectsFromFirestore();
     });
-}
+</script>
+
   
-    });
-  </script>
-  </body>
-  </html>
-  
+</body>
+
+</html>
